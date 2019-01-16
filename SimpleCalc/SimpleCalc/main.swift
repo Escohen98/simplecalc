@@ -16,14 +16,22 @@ public class Calculator {
     * If expected numeric values are not, converts to 0.
     */
     public func calculate(_ args: [String]) -> Int {
-        let one = Double(args[0]) ?? 0
-        let two = Double(args[2]) ?? 0
+        if(args.count <= 1) {
+            return 0;
+        }
+        let zero = Double(args[0]) ?? 0
+        let two: Double;
+        if(args.count == 3) {
+            two = Double(args[2]) ?? 0
+        } else {
+            two = 0
+        }
         switch args[1] {
-            case "+": return Int(one + two)
-            case "-": return Int(one - two)
-            case "/": return Int(one / two)
-            case "%": return Int(one) % Int(two)
-            case "*": return Int(one * two)
+            case "+": return Int(zero + two)
+            case "-": return Int(zero - two)
+            case "/": return Int(zero / two)
+            case "%": return Int(zero) % Int(two)
+            case "*": return Int(zero * two)
             default: return specialCalculate(args)
         }
     }
@@ -49,10 +57,14 @@ public class Calculator {
                 }
                 var newArgv = argv
                 newArgv[nums] = "count"
-                return Int(sum/Double(specialCalculate(newArgv)))
+                let count = Double(specialCalculate(newArgv))
+                if count == 0.0 {
+                    return 0;
+                }
+                return Int(sum/count)
             case "fact":
                 var factorial = 1
-                for i in (Int(argv[0]) ?? 0)...1 {
+                for i in 1...(Int(argv[0]) ?? 1) {
                     if i != 0 {
                         factorial = factorial * i
                     }
